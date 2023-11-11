@@ -1,8 +1,22 @@
+@font-face {
+  font-family: "GtAmerica";   /*Can be any text*/
+  src: local("GtAmerica"),
+  url("../fonts/GT-America-Standard-Regular.ttf") format("truetype");
+}
+
+.show {
+  color: black;
+}
+
+.hide {
+  color: transparent;
+}
+
 .main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   padding: 6rem;
   min-height: 100vh;
 }
