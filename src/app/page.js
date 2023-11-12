@@ -3,9 +3,6 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import {useState, useEffect} from "react";
 
-function RenderLetter(props) {
-
-}
 function RenderChar(props) {
   const [char, setChar] = useState({char: props.char});
 
@@ -30,9 +27,9 @@ function RenderChar(props) {
         return;
       }
 
-      if (props.endWord || Math.random() < 0.5) {
+      if (it.shouldShow) {
         it.show = true;
-        if (Math.random() > 0.2) {
+        if (Math.random() > 0.3) {
           it.transform = true;
         }
       }
@@ -47,8 +44,15 @@ function RenderChar(props) {
     }, props.timeout);
     const hide = setTimeout(() => {
       const it = char.char;
-      it.show = false;
+      if (Math.random() < 0.3) {
+        it.transform = true;
+      }
       setChar({char: it});
+      setTimeout(() => {
+        const it = char.char;
+        it.show = false;
+        setChar({char: it});
+      }, 100);
     }, props.hideTimeout);
     return () => {
       clearTimeout(timer);
@@ -76,38 +80,8 @@ function RenderRow(props) {
 
 function Row(props) {
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     const chars = word.chars;
-  //     chars.forEach(it => {
-  //       if (it.marginChar) {
-  //         return;
-  //       }
-  //       if (Math.random() < 0.5) {
-  //         it.show = true;
-  //         if (Math.random() > 0.2) {
-  //           it.transform = true;
-  //         }
-  //       }
-  //     });
-  //     console.log("#timeout");
-  //     setWord({chars: chars});
-  //     setTimeout(() => {
-  //       const chars = word.chars;
-  //       chars.forEach(it => {
-  //         if (props.endWord && !it.marginChar) {
-  //           it.show = true;
-  //         }
-  //         it.transform = false;
-  //       });
-  //       console.log("#innertimeout");
-  //       setWord({chars: chars});
-  //     }, 400);
-  //   }, props.timeout);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   const [show, setShow] = useState(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
      setShow(true);
@@ -116,11 +90,19 @@ function Row(props) {
   }, []);
 
   if (show) {
+    let numChars = Math.max(2, Math.min(5, Math.floor(props.word.length / 2)));
+    let showChars = [];
+    for (let i = 0; i < props.word.length; i++) {
+      showChars.push(i);
+    }
+    for (let i = 0; i < (props.word.length - numChars); i++) {
+      showChars.splice(Math.floor(Math.random()*showChars.length), 1);
+    }
     const margins = new Array(props.margin).fill(0).map(it => {
-      return {char: "#", show: false, transform: false, marginChar: true};
+      return {char: "#", show: false, shouldShow: false, transform: false, marginChar: true};
     });
-    const chars = props.word.split('').map(it => {
-      return {char: it, show: false, transform: false, marginChar: false};
+    const chars = props.word.split('').map((it, index) => {
+      return {char: it, show: false, shouldShow: (props.endWord || showChars.indexOf(index) >= 0), transform: false, marginChar: false};
     });
     const word = {chars: margins.concat(chars)};
     return (
@@ -135,8 +117,13 @@ function Row(props) {
 
 export default function Home() {
   const words = [
-      "Teknologi",
-      "Design"
+    {word: "Teknologi", margin: 5},
+    {word: "Design", margin: 5},
+    {word: "Teknologi", margin: 1},
+    {word: "Management consulting", margin: 0},
+    {word: "Management consulting", margin: 0},
+    {word: "Management consulting", margin: 0},
+    {word: "Management consulting", margin: 0},
   ];
 
   const [wordIndex, setWordIndex] = useState( 0)
@@ -144,14 +131,12 @@ export default function Home() {
   useEffect(() => {
     //Implementing the setInterval method
     const interval = setInterval(() => {
-      console.log("change to next word");
       let i = wordIndex + 1;
       if (i >= words.length) {
         i = 0;
       }
-      console.log("setting new index " + i);
       setWordIndex(i);
-    }, 7000);
+    }, 6000);
 
     //Clearing the interval
     return () => clearInterval(interval);
@@ -163,11 +148,11 @@ export default function Home() {
     <main className={styles.main}>
       <div>
         <p>Bekk</p>
-        <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={200}></Row>
-        <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={400}></Row>
-        <Row key={"w3-"+wordIndex} word={word} margin={3} timeout={600}></Row>
-        <Row key={"w4-"+wordIndex} word={word} margin={4} timeout={800}></Row>
-        <Row key={"w5-"+wordIndex} word={word} margin={5} timeout={1000} endWord></Row>
+        <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={250}></Row>
+        <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={500}></Row>
+        <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={750}></Row>
+        <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={1000}></Row>
+        <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={1250} endWord></Row>
       </div>
     </main>
   )

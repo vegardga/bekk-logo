@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "GtAmerica";   /*Can be any text*/
-  src: local("GtAmerica"),
-  url("../fonts/GT-America-Standard-Regular.ttf") format("truetype");
-}
 
 .show {
   color: black;
@@ -19,6 +14,7 @@
   align-items: start;
   padding: 6rem;
   min-height: 100vh;
+  font-family: GtAmerica;
 }
 
 .description {
