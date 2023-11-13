@@ -90,13 +90,14 @@ function Row(props) {
   }, []);
 
   if (show) {
-    let numChars = Math.max(2, Math.min(5, Math.floor(props.word.length / 2)));
+    let numChars = Math.max(2, Math.min(4, Math.floor(props.word.length / 2)));
+    let possibleChars = [];
     let showChars = [];
-    for (let i = 0; i < props.word.length; i++) {
-      showChars.push(i);
+    for (let i = 0; i < Math.min(6, props.word.length); i++) {
+      possibleChars.push(i);
     }
-    for (let i = 0; i < (props.word.length - numChars); i++) {
-      showChars.splice(Math.floor(Math.random()*showChars.length), 1);
+    for (let i = 0; i < numChars; i++) {
+      showChars.push(possibleChars.splice(Math.floor(Math.random()*possibleChars.length), 1)[0]);
     }
     const margins = new Array(props.margin).fill(0).map(it => {
       return {char: "#", show: false, shouldShow: false, transform: false, marginChar: true};
@@ -119,11 +120,12 @@ export default function Home() {
   const words = [
     {word: "Teknologi", margin: 5},
     {word: "Design", margin: 5},
-    {word: "Teknologi", margin: 1},
+    {word: "Trønder", margin: 5},
+    {word: "Produktledelse", margin: 4},
     {word: "Management consulting", margin: 0},
-    {word: "Management consulting", margin: 0},
-    {word: "Management consulting", margin: 0},
-    {word: "Management consulting", margin: 0},
+    {word: "Julebord", margin: 3},
+    {word: "Kompetanse", margin: 4},
+    {word: "#godstemning", margin: 5},
   ];
 
   const [wordIndex, setWordIndex] = useState( 0)
