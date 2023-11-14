@@ -6,17 +6,15 @@ function getDefaultWords() {
   return [
     {word: "Teknologi", margin: 5},
     {word: "Design", margin: 5},
-    {word: "Trønder", margin: 5},
+    {word: "Faggruppe", margin: 5},
     {word: "Produktledelse", margin: 4},
     {word: "Management consulting", margin: 0},
-    {word: "Julebord", margin: 3},
-    {word: "Kompetanse", margin: 4},
-    {word: "Faggruppe", margin: 5},
     {word: "Fagkveld", margin: 3},
-    {word: "Fagmiljø", margin: 4},
+    {word: "Kompetanse", margin: 4},
     {word: "Fellesskap", margin: 0},
     {word: "Nysgjerrighet", margin: 3},
     {word: "Bærekraft", margin: 4},
+    {word: "Fagmiljø", margin: 4},
     {word: "Sikkerhet", margin: 5},
     {word: "Strategi", margin: 4},
     {word: "Datadreven", margin: 0},
@@ -24,7 +22,6 @@ function getDefaultWords() {
     {word: "Karriere", margin: 4},
     {word: "#livetibekk", margin: 0},
     {word: "Kultur", margin: 4},
-    {word: "#godstemning", margin: 5},
   ];
 }
 export default function Logo() {
