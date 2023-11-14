@@ -1,4 +1,3 @@
-import styles from './Logo.css'
 import { useSearchParams } from 'react-router-dom';
 import {useState, useEffect} from "react";
 
