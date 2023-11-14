@@ -1,6 +1,6 @@
 
 .show {
-  color: black;
+  color: white;
 }
 
 .hide {
@@ -12,9 +12,10 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
-  padding: 6rem;
+  padding: 1rem;
   min-height: 100vh;
   font-family: GtAmerica;
+  font-size: 3rem;
 }
 
 .description {
