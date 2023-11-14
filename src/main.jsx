@@ -14,6 +14,11 @@ const router = createBrowserRouter([
     element: <Logo/>,
     errorElement: <NotFound/>,
   },
+  {
+    path: "/bekk-logo",
+    element: <Logo/>,
+    errorElement: <NotFound/>,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
