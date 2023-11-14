@@ -2,13 +2,17 @@
   "name": "logo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://vegardga.github.io/bekk-logo",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "gh-pages": "^6.0.0",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
