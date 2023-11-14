@@ -1,118 +1,6 @@
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 import {useState, useEffect} from "react";
-
-function RenderChar(props) {
-  const [char, setChar] = useState({char: props.char});
-
-  function renderChar() {
-    const it = char.char;
-    if (it.transform) {
-      const bekk = "Bekk" + props.word;
-      return bekk.charAt(Math.floor(Math.random()*bekk.length));
-    }
-    return it.char;
-  }
-
-  function getClassName() {
-    return char.char.show ? 'show' : 'hide';
-  }
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const it = char.char;
-
-      if (it.marginChar) {
-        return;
-      }
-
-      if (it.shouldShow) {
-        it.show = true;
-        if (Math.random() > 0.3) {
-          it.transform = true;
-        }
-      }
-
-      setChar({char: it});
-
-      setTimeout(() => {
-        const it = char.char;
-        it.transform = false;
-        setChar({char: it});
-      }, 100);
-    }, props.timeout);
-    const hide = setTimeout(() => {
-      const it = char.char;
-      if (Math.random() < 0.3) {
-        it.transform = true;
-      }
-      setChar({char: it});
-      setTimeout(() => {
-        const it = char.char;
-        it.show = false;
-        setChar({char: it});
-      }, 100);
-    }, props.hideTimeout);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-
-  return (
-      <span className={getClassName()}>{renderChar()}</span>
-  );
-}
-
-function RenderRow(props) {
-  let delay = 0;
-  let hideTimeout = 4000;
-  return (
-      <p>{props.chars.map((it, index) => {
-        if (!it.marginChar) {
-          delay += 100;
-          hideTimeout += 25;
-        }
-        return <RenderChar key={"char-"+index} char={it} timeout={delay} hideTimeout={hideTimeout} word={props.word} endWord={props.endWord}/>
-      })}</p>
-  );
-}
-
-function Row(props) {
-
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, props.timeout);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (show) {
-    let numChars = Math.max(2, Math.min(4, Math.floor(props.word.length / 2)));
-    let possibleChars = [];
-    let showChars = [];
-    for (let i = 0; i < Math.min(6, props.word.length); i++) {
-      possibleChars.push(i);
-    }
-    for (let i = 0; i < numChars; i++) {
-      showChars.push(possibleChars.splice(Math.floor(Math.random()*possibleChars.length), 1)[0]);
-    }
-    const margins = new Array(props.margin).fill(0).map(it => {
-      return {char: "#", show: false, shouldShow: false, transform: false, marginChar: true};
-    });
-    const chars = props.word.split('').map((it, index) => {
-      return {char: it, show: false, shouldShow: (props.endWord || showChars.indexOf(index) >= 0), transform: false, marginChar: false};
-    });
-    const word = {chars: margins.concat(chars)};
-    return (
-        <RenderRow chars={word.chars} word={props.word} endWord={props.endWord}/>
-    );
-  } else {
-    return (
-        <p></p>
-    );
-  }
-}
+import Row from "./Row.jsx"
 
 function getDefaultWords() {
   return [
@@ -123,45 +11,49 @@ function getDefaultWords() {
     {word: "Management consulting", margin: 0},
     {word: "Julebord", margin: 3},
     {word: "Kompetanse", margin: 4},
-    {word: "Faggruppe", margin: 4},
-    {word: "Fagkveld", margin: 4},
+    {word: "Faggruppe", margin: 5},
+    {word: "Fagkveld", margin: 3},
     {word: "Fagmiljø", margin: 4},
-    {word: "Fellesskap", margin: 4},
-    {word: "Nysgjerrighet", margin: 4},
+    {word: "Fellesskap", margin: 0},
+    {word: "Nysgjerrighet", margin: 3},
     {word: "Bærekraft", margin: 4},
-    {word: "Sikkerhet", margin: 4},
+    {word: "Sikkerhet", margin: 5},
     {word: "Strategi", margin: 4},
-    {word: "Datadreven", margin: 4},
-    {word: "Innovasjon", margin: 4},
+    {word: "Datadreven", margin: 0},
+    {word: "Innovasjon", margin: 2},
     {word: "Karriere", margin: 4},
-    {word: "#livetibekk", margin: 4},
+    {word: "#livetibekk", margin: 0},
     {word: "Kultur", margin: 4},
     {word: "#godstemning", margin: 5},
   ];
 }
 export default function Logo() {
-  let words = getDefaultWords();
+  const LONG_WORD = 9;
+  const MARGIN_LONG_WORD = 2;
+  const MARGIN_SHORT_WORD = 5;
+  const TIMEOUT_NEW_WORD = 6000;
+  const TIMEOUT_ROW = 250;
 
+  let words = getDefaultWords();
   const [searchParams, setSearchParams] = useSearchParams();
   const [wordIndex, setWordIndex] = useState( 0)
 
   const wordParams = searchParams.get('words');
   if (wordParams) {
     words = wordParams.split(',').map(w => {
-      const margin = w.length > 9 ? 2 : 5;
+      const margin = w.length > LONG_WORD ? MARGIN_LONG_WORD : MARGIN_SHORT_WORD;
       return {word: w, margin: Math.floor(Math.random()*margin)};
     });
   }
 
   useEffect(() => {
-    //Implementing the setInterval method
     const interval = setInterval(() => {
       let i = wordIndex + 1;
       if (i >= words.length) {
         i = 0;
       }
       setWordIndex(i);
-    }, 6000);
+    }, TIMEOUT_NEW_WORD);
 
     //Clearing the interval
     return () => clearInterval(interval);
@@ -170,14 +62,12 @@ export default function Logo() {
   const word = words[wordIndex];
   return (
       <main className={"main"}>
-        <div>
           <p>Bekk</p>
-          <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={250}></Row>
-          <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={500}></Row>
-          <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={750}></Row>
-          <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={1000}></Row>
-          <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={1250} endWord></Row>
-        </div>
+          <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={TIMEOUT_ROW}></Row>
+          <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={TIMEOUT_ROW*2}></Row>
+          <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={TIMEOUT_ROW*3}></Row>
+          <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={TIMEOUT_ROW*4}></Row>
+          <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*5} endWord></Row>
       </main>
   )
 }
