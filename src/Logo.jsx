@@ -1,5 +1,4 @@
-'use client'
-import styles from './page.module.css'
+import styles from './Logo.css'
 import { useSearchParams } from 'react-router-dom';
 import {useState, useEffect} from "react";
 
@@ -16,7 +15,7 @@ function RenderChar(props) {
   }
 
   function getClassName() {
-    return char.char.show ? styles.show : styles.hide;
+    return char.char.show ? 'show' : 'hide';
   }
 
   useEffect(() => {
@@ -84,7 +83,7 @@ function Row(props) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-     setShow(true);
+      setShow(true);
     }, props.timeout);
     return () => clearTimeout(timer);
   }, []);
@@ -171,15 +170,15 @@ export default function Logo() {
 
   const word = words[wordIndex];
   return (
-    <main className={styles.main}>
-      <div>
-        <p>Bekk</p>
-        <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={250}></Row>
-        <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={500}></Row>
-        <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={750}></Row>
-        <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={1000}></Row>
-        <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={1250} endWord></Row>
-      </div>
-    </main>
+      <main className={"main"}>
+        <div>
+          <p>Bekk</p>
+          <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={250}></Row>
+          <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={500}></Row>
+          <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={750}></Row>
+          <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={1000}></Row>
+          <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={1250} endWord></Row>
+        </div>
+      </main>
   )
 }

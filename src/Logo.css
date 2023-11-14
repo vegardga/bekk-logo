@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "GtAmerica";   /*Can be any text*/
+  src: local("GtAmerica"),
+  url("./fonts/FontsFree-Net-GT-America-Regular-1.ttf") format("truetype");
+}
+
+.show {
+  color: white;
+}
+
+.hide {
+  color: transparent;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  padding: 1rem;
+  min-height: 100vh;
+  font-family: GtAmerica;
+  font-size: 3rem;
+}
+
+p {
+  margin: 0;
+}
