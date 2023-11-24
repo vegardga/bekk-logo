@@ -28,7 +28,7 @@ export default function Logo() {
   const LONG_WORD = 9;
   const MARGIN_LONG_WORD = 2;
   const MARGIN_SHORT_WORD = 5;
-  const TIMEOUT_NEW_WORD = 6000;
+  let TIMEOUT_NEW_WORD = 6000;
   const TIMEOUT_ROW = 250;
 
   let words = getDefaultWords();
@@ -41,6 +41,10 @@ export default function Logo() {
       const margin = w.length > LONG_WORD ? MARGIN_LONG_WORD : MARGIN_SHORT_WORD;
       return {word: w, margin: Math.floor(Math.random()*margin)};
     });
+  }
+  const newWordTimeout = searchParams.get('delay');
+  if (newWordTimeout) {
+    TIMEOUT_NEW_WORD = newWordTimeout;
   }
 
   useEffect(() => {
