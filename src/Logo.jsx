@@ -32,6 +32,7 @@ export default function Logo() {
   const TIMEOUT_ROW = 250;
 
   let words = getDefaultWords();
+  let goldenWords = [];
   const [searchParams, setSearchParams] = useSearchParams();
   const [wordIndex, setWordIndex] = useState( 0)
 
@@ -42,9 +43,15 @@ export default function Logo() {
       return {word: w, margin: Math.floor(Math.random()*margin)};
     });
   }
+
   const newWordTimeout = searchParams.get('delay');
   if (newWordTimeout) {
     TIMEOUT_NEW_WORD = newWordTimeout;
+  }
+
+  const goldenWordParams = searchParams.get("goldenWords");
+  if (goldenWordParams) {
+    goldenWords = goldenWordParams.split(',');
   }
 
   useEffect(() => {
@@ -68,7 +75,7 @@ export default function Logo() {
           <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={TIMEOUT_ROW*2}></Row>
           <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={TIMEOUT_ROW*3}></Row>
           <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={TIMEOUT_ROW*4}></Row>
-          <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*5} endWord></Row>
+          <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*5} endWord goldenWords={goldenWords}></Row>
       </main>
   )
 }

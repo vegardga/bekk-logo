@@ -34,6 +34,13 @@ function getMarginCharacters(margin) {
   });
 }
 
+function getRowClass(word, goldenWords) {
+  if (goldenWords && goldenWords.indexOf(word) >= 0) {
+    return 'golden';
+  }
+  return 'black';
+}
+
 export default function Row(props) {
   const [show, setShow] = useState(false);
 
@@ -45,13 +52,14 @@ export default function Row(props) {
   }, []);
 
   if (show) {
+    const rowClass = getRowClass(props.word, props.goldenWords);
     const visibleCharacterList = getVisibleCharacterIndexList(props.word);
     const chars = props.word.split('').map((it, index) => {
       return {char: it, show: false, shouldShow: (props.endWord || visibleCharacterList.indexOf(index) >= 0), transform: false, marginChar: false};
     });
     const word = {chars: getMarginCharacters(props.margin).concat(chars)};
     return (
-        <RenderRow chars={word.chars} word={props.word} endWord={props.endWord}/>
+        <div className={rowClass}><RenderRow chars={word.chars} word={props.word} endWord={props.endWord}/></div>
     );
   } else {
     return (
