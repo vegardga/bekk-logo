@@ -24,17 +24,25 @@ function getDefaultWords() {
     {word: "Kultur", margin: 4},
   ];
 }
-export default function Logo() {
-  const LONG_WORD = 9;
+export default function Frame() {
+  let LONG_WORD = 9;
   const MARGIN_LONG_WORD = 2;
   const MARGIN_SHORT_WORD = 5;
   let TIMEOUT_NEW_WORD = 6000;
-  const TIMEOUT_ROW = 250;
+  let TIMEOUT_ROW = 250;
+  let BACKGROUND_COLOR = 'black';
+  let IS_FRAME = false;
 
   let words = getDefaultWords();
-  let goldenWords = [];
+  let rebelWords = [];
   const [searchParams, setSearchParams] = useSearchParams();
   const [wordIndex, setWordIndex] = useState( 0)
+
+  const isFrameParam = searchParams.get('frame');
+  if (isFrameParam) {
+    IS_FRAME = true;
+    LONG_WORD = 6;
+  }
 
   const wordParams = searchParams.get('words');
   if (wordParams) {
@@ -49,9 +57,19 @@ export default function Logo() {
     TIMEOUT_NEW_WORD = newWordTimeout;
   }
 
-  const goldenWordParams = searchParams.get("goldenWords");
-  if (goldenWordParams) {
-    goldenWords = goldenWordParams.split(',');
+  const speedParams = searchParams.get('speed');
+  if (speedParams) {
+    TIMEOUT_ROW = speedParams;
+  }
+
+  const rebelWordsParams = searchParams.get("rebel");
+  if (rebelWordsParams) {
+    rebelWords = rebelWordsParams.split(',');
+  }
+
+  const bgColorParams = searchParams.get("bgColor");
+  if (bgColorParams) {
+    BACKGROUND_COLOR = bgColorParams;
   }
 
   useEffect(() => {
@@ -69,13 +87,13 @@ export default function Logo() {
 
   const word = words[wordIndex];
   return (
-      <main className={"main"}>
-          <p>Bekk</p>
-          <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={TIMEOUT_ROW} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
-          <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={TIMEOUT_ROW*2} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
-          <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={TIMEOUT_ROW*3} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
-          <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={TIMEOUT_ROW*4} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
-          <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*5} endWord goldenWords={goldenWords} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+      <main className={`main ${IS_FRAME ? 'frame' : ''} bg-${BACKGROUND_COLOR}`}>
+        <p>Bekk</p>
+        <Row key={"w1-"+wordIndex} word={"Bekk"} margin={1} timeout={TIMEOUT_ROW} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+        <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={TIMEOUT_ROW*2} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+        <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={TIMEOUT_ROW*3} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+        <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={TIMEOUT_ROW*4} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+        <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*5} endWord goldenWords={rebelWords} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
       </main>
   )
 }
