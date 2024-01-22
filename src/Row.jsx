@@ -3,7 +3,7 @@ import Letter from "./Letter.jsx";
 
 function RenderRow(props) {
   let delay = 0;
-  let hideTimeout = 4000;
+  let hideTimeout = props.removeWordTimeout;
   return (
       <p>{props.chars.map((it, index) => {
         if (!it.marginChar) {
@@ -59,7 +59,7 @@ export default function Row(props) {
     });
     const word = {chars: getMarginCharacters(props.margin).concat(chars)};
     return (
-        <div className={rowClass}><RenderRow chars={word.chars} word={props.word} endWord={props.endWord}/></div>
+        <div className={rowClass}><RenderRow chars={word.chars} word={props.word} endWord={props.endWord} removeWordTimeout={props.removeWordTimeout}/></div>
     );
   } else {
     return (

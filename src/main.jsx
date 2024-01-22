@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import './index.css'
 import Logo from './Logo.jsx'
+import Frame from './Frame.jsx'
 import NotFound from './NotFound.jsx'
 
 const router = createBrowserRouter([
@@ -17,6 +18,11 @@ const router = createBrowserRouter([
   {
     path: "/bekk-logo",
     element: <Logo/>,
+    errorElement: <NotFound/>,
+  },
+  {
+    path: "/bekk-logo/frame",
+    element: <Frame/>,
     errorElement: <NotFound/>,
   },
 ]);
