@@ -93,7 +93,8 @@ export default function Frame() {
         <Row key={"w2-"+wordIndex} word={"Bekk"} margin={2} timeout={TIMEOUT_ROW*2} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
         <Row key={"w3-"+wordIndex} word={word.word} margin={3} timeout={TIMEOUT_ROW*3} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
         <Row key={"w4-"+wordIndex} word={word.word} margin={Math.floor((4+word.margin)/2)} timeout={TIMEOUT_ROW*4} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
-        <Row key={"w5-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*5} endWord goldenWords={rebelWords} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+        <Row key={"w5-"+wordIndex} word={word.word} margin={Math.floor((3+word.margin)/2)} timeout={TIMEOUT_ROW*5} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
+        <Row key={"w6-"+wordIndex} word={word.word} margin={word.margin} timeout={TIMEOUT_ROW*6} endWord goldenWords={rebelWords} removeWordTimeout={TIMEOUT_NEW_WORD/2}></Row>
       </main>
   )
 }
